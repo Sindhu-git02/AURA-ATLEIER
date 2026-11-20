@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA Atelier | Luxury Fashion & Accessories</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts - Playfair Display for headers, Inter for body text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES (DESIGN TOKENS & THEMING)
+       ========================================================================== */
+    :root {
+      /* Colors */
+      --bg-primary: #fcfbf9;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f4f1ea;
+      --text-main: #1a1a1a;
+      --text-muted: #666666;
+      --accent-gold: #c5a059;
+      --accent-gold-hover: #b08c46;
+      --border-color: #e5e0d8;
+      --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+      
+      /* Typography */
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Inter', sans-serif;
+
+      /* Transitions */
+      --transition-fast: 0.2s ease;
+      --transition-normal: 0.3s ease;
+    }
+
+    /* Dark Mode Variable Overrides */
+    [data-theme="dark"] {
+      --bg-primary: #121212;
+      --bg-surface: #1e1e1e;
+      --bg-subtle: #272727;
+      --text-main: #f0f0f0;
+      --text-muted: #a0a0a0;
+      --accent-gold: #d4af37;
+      --accent-gold-hover: #e5be48;
+      --border-color: #333333;
+      --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Reset & Global Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+      transition: background-color var(--transition-normal), color var(--transition-normal);
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      background: none;
+      font-family: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ==========================================================================
+       2. HEADER & NAVIGATION (STICKY & FLEXBOX)
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color var(--transition-normal);
+    }
+
+    [data-theme="dark"] .site-header {
+      background-color: rgba(18, 18, 18, 0.95);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+    }
+
+    .brand-logo {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+
+    .brand-logo span {
+      color: var(--accent-gold);
+      font-weight: 300;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 500;
+      color: var(--text-main);
+      transition: color var(--transition-fast);
+      position: relative;
+      padding: 5px 0;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--accent-gold);
+      transition: width var(--transition-fast);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .icon-btn {
+      font-size: 1.2rem;
+      color: var(--text-main);
+      position: relative;
+      padding: 6px;
+      transition: color var(--transition-fast);
+    }
+
+    .icon-btn:hover {
+      color: var(--accent-gold);
+    }
+
+    /* Counter Badges (Positioning Absolute) */
+    .badge {
+      position: absolute;
+      top: 0px;
+      right: -4px;
+      background-color: var(--accent-gold);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 600;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-toggle {
+      display: none;
+      font-size: 1.4rem;
+      color: var(--text-main);
+    }
+
+    /* ==========================================================================
+       3. HERO BANNER
+       ========================================================================== */
+    .hero {
+      position: relative;
+      height: 75vh;
+      min-height: 500px;
+      background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), 
+                        url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1600&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center 25%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 50px;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      padding: 0 20px;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .hero-subtitle {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 15px;
+      color: #f0e6d2;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .hero-description {
+      font-size: 1rem;
+      font-weight: 300;
+      margin-bottom: 30px;
+      color: #e0e0e0;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 14px 36px;
+      background-color: var(--accent-gold);
+      color: #ffffff;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 500;
+      border-radius: 2px;
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-gold-hover);
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       4. FILTER & CONTROLS SECTION (FLEXBOX)
+       ========================================================================== */
+    .shop-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      padding: 8px 18px;
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      background: var(--bg-surface);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      transition: all var(--transition-fast);
+    }
+
+    .chip:hover, .chip.active {
+      background-color: var(--text-main);
+      color: var(--bg-surface);
+      border-color: var(--text-main);
+    }
+
+    .sort-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sort-box label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .sort-select {
+      padding: 8px 15px;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-surface);
+      color: var(--text-main);
+      border-radius: 4px;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       5. PRODUCT GRID & CARDS (CSS GRID & POSITIONING)
+       ========================================================================== */
+    .product-grid {
+      display: grid;
+      /* Responsive grid layout using CSS Grid auto-fill */
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 35px 25px;
+      margin-bottom: 80px;
+    }
+
+    .product-card {
+      background-color: var(--bg-surface);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Image Container with Hover Overlay Swap Effect */
+    .card-media {
+      position: relative;
+      width: 100%;
+      padding-top: 135%; /* 3:4 Aspect Ratio */
+      overflow: hidden;
+      background-color: var(--bg-subtle);
+    }
+
+    .card-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.4s ease;
+    }
+
+    .card-img-secondary {
+      opacity: 0;
+    }
+
+    .product-card:hover .card-img-secondary {
+      opacity: 1;
+    }
+
+    /* Card Badge Positioning */
+    .card-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 10px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 2px;
+      z-index: 2;
+    }
+
+    .badge-sale { background-color: #a84242; color: #fff; }
+    .badge-new { background-color: var(--accent-gold); color: #fff; }
+    .badge-bestseller { background-color: var(--text-main); color: var(--bg-surface); }
+
+    /* Wishlist Heart Button Positioning */
+    .wishlist-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #444;
+      transition: all var(--transition-fast);
+      z-index: 2;
+    }
+
+    .wishlist-btn:hover, .wishlist-btn.active {
+      color: #e63946;
+      background: #ffffff;
+    }
+
+    /* Quick View / Slide Up Button */
+    .quick-view-btn {
+      position: absolute;
+      bottom: -45px;
+      left: 0;
+      width: 100%;
+      padding: 12px;
+      background-color: rgba(26, 26, 26, 0.9);
+      color: #ffffff;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      transition: bottom 0.3s ease;
+      z-index: 2;
+    }
+
+    .product-card:hover .quick-view-btn {
+      bottom: 0;
+    }
+
+    /* Product Details Content */
+    .card-details {
+      padding: 16px 10px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .card-rating {
+      font-size: 0.75rem;
+      color: #e5a93c;
+      margin-bottom: 8px;
+    }
+
+    .card-rating span {
+      color: var(--text-muted);
+      margin-left: 4px;
+    }
+
+    .card-price {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-top: auto;
+    }
+
+    .card-price .old-price {
+      text-decoration: line-through;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-left: 8px;
+    }
+
+    /* ==========================================================================
+       6. MODAL (QUICK VIEW) & DRAWER (CART)
+       ========================================================================== */
+    /* Shared Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Slide-out Cart Drawer */
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      background-color: var(--bg-surface);
+      z-index: 201;
+      box-shadow: var(--shadow-lg);
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-drawer.active {
+      right: 0;
+    }
+
+    .drawer-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .drawer-title {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+    }
+
+    .close-btn {
+      font-size: 1.2rem;
+      color: var(--text-main);
+    }
+
+    .cart-items-list {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .cart-item-img {
+      width: 70px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 2px;
+    }
+
+    .cart-item-info {
+      flex-grow: 1;
+    }
+
+    .cart-item-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .cart-item-price {
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+      margin-bottom: 8px;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .qty-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .drawer-footer {
+      padding: 20px;
+      border-top: 1px solid var(--border-color);
+      background-color: var(--bg-subtle);
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .btn-checkout {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--text-main);
+      color: var(--bg-surface);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Quick View Popup Modal */
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 90%;
+      max-width: 800px;
+      background: var(--bg-surface);
+      z-index: 201;
+      border-radius: 4px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .modal-img {
+      width: 100%;
+      height: 100%;
+      max-height: 480px;
+      object-fit: cover;
+    }
+
+    .modal-details {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 1.2rem;
+    }
+
+    .size-selector {
+      margin: 20px 0;
+    }
+
+    .size-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .size-options {
+      display: flex;
+      gap: 10px;
+    }
+
+    .size-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .size-btn.active {
+      border-color: var(--text-main);
+      background-color: var(--text-main);
+      color: var(--bg-surface);
+    }
+
+    /* ==========================================================================
+       7. FOOTER
+       ========================================================================== */
+    .site-footer {
+      background-color: var(--bg-subtle);
+      border-top: 1px solid var(--border-color);
+      padding: 60px 0 30px;
+      margin-top: 40px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 15px;
+      max-width: 300px;
+    }
+
+    .footer-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      transition: color var(--transition-fast);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-gold);
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    /* ==========================================================================
+       8. RESPONSIVE MEDIA QUERIES
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .modal-body {
+        grid-template-columns: 1fr;
+      }
+      .modal-img {
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none; /* Hide header menu links on small mobile screens */
+      }
+      .mobile-toggle {
+        display: block;
+      }
+      .hero-title {
+        font-size: 2.2rem;
+      }
+      .shop-controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+     HEADER / NAVBAR
+     ========================================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <button class="mobile-toggle" aria-label="Toggle Navigation"><i class="fa-solid fa-bars"></i></button>
+      
+      <a href="#" class="brand-logo">Aura <span>Atelier</span></a>
+      
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#" class="active">Home</a></li>
+          <li><a href="#shop">New Arrivals</a></li>
+          <li><a href="#shop">Clothing</a></li>
+          <li><a href="#shop">Accessories</a></li>
+          <li><a href="#shop">Footwear</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Dark/Light Mode Theme Toggle -->
+        <button class="icon-btn" id="theme-toggle" title="Toggle Theme">
+          <i class="fa-regular fa-moon"></i>
+        </button>
+        
+        <!-- Wishlist Icon with Counter Badge -->
+        <button class="icon-btn" id="wishlist-icon" title="Wishlist">
+          <i class="fa-regular fa-heart"></i>
+          <span class="badge" id="wishlist-count">0</span>
+        </button>
+
+        <!-- Cart Drawer Icon with Counter Badge -->
+        <button class="icon-btn" id="cart-icon" title="Cart Drawer">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="badge" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+     HERO BANNER
+     ========================================================================== -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-subtitle">Autumn / Winter 2026</p>
+      <h1 class="hero-title">Timeless Elegance & Modern Craft</h1>
+      <p class="hero-description">Explore our curated collection of luxury essential apparel and minimalist artisanal accessories.</p>
+      <a href="#shop" class="btn-primary">Explore Collection</a>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+     MAIN CONTENT STOREFRONT
+     ========================================================================== -->
+  <main class="container" id="shop">
+    
+    <!-- Category Filter Chips & Sorting Dropdown -->
+    <div class="shop-controls">
+      <div class="filter-chips">
+        <button class="chip active" data-filter="all">All Collection</button>
+        <button class="chip" data-filter="clothing">Clothing</button>
+        <button class="chip" data-filter="accessories">Accessories</button>
+        <button class="chip" data-filter="footwear">Footwear</button>
+      </div>
+
+      <div class="sort-box">
+        <label for="sort-select">Sort By:</label>
+        <select id="sort-select" class="sort-select">
+          <option value="featured">Featured</option>
+          <option value="low-high">Price: Low to High</option>
+          <option value="high-low">Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Product Grid Container (12 Products rendered dynamically via Vanilla JS) -->
+    <div class="product-grid" id="product-grid"></div>
+  </main>
+
+  <!-- ==========================================================================
+     SLIDE-OUT CART DRAWER & OVERLAY
+     ========================================================================== -->
+  <div class="overlay" id="overlay"></div>
+
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="drawer-header">
+      <h3 class="drawer-title">Shopping Bag (<span id="drawer-item-count">0</span>)</h3>
+      <button class="close-btn" id="close-cart"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="cart-items-list" id="cart-items-container">
+      <!-- Cart items injected here dynamically -->
+    </div>
+
+    <div class="drawer-footer">
+      <div class="total-row">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">$0.00</span>
+      </div>
+      <button class="btn-checkout">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+     QUICK VIEW MODAL
+     ========================================================================== -->
+  <div class="modal" id="quick-view-modal">
+    <button class="close-btn modal-close" id="close-modal"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-body" id="modal-content">
+      <!-- Dynamic modal data injected here -->
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+     FOOTER
+     ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="brand-logo">Aura <span>Atelier</span></a>
+          <p>A contemporary luxury atelier dedicated to sustainable tailoring, premium natural fabrics, and refined minimal design.</p>
+        </div>
+        <div>
+          <h4 class="footer-title">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#">New Arrivals</a></li>
+            <li><a href="#">Clothing</a></li>
+            <li><a href="#">Accessories</a></li>
+            <li><a href="#">Footwear</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Customer Care</h4>
+          <ul class="footer-links">
+            <li><a href="#">Shipping & Returns</a></li>
+            <li><a href="#">Size Guide</a></li>
+            <li><a href="#">Care Instructions</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Connect</h4>
+          <ul class="footer-links">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Pinterest</a></li>
+            <li><a href="#">Newsletter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        &copy; 2026 AURA Atelier. Designed for Web Development Academic Presentation. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+     VANILLA JAVASCRIPT LOGIC
+     ========================================================================== -->
+  <script>
+    /* --------------------------------------------------------------------------
+       1. PRODUCT DATA DATASET (12 Realistic Luxury Fashion Products)
+       -------------------------------------------------------------------------- */
+    const products = [
+      {
+        id: 1,
+        title: "Oversized Cashmere Coat",
+        category: "clothing",
+        price: 490,
+        oldPrice: 580,
+        rating: 4.9,
+        reviews: 24,
+        badge: "bestseller",
+        imgPrimary: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop",
+        description: "Crafted from 100% pure Grade-A Mongolian cashmere. Features an oversized silhouette, dropped shoulders, and clean unlined finishing."
+      },
+      {
+        id: 2,
+        title: "Tailored Linen Blazer",
+        category: "clothing",
+        price: 260,
+        oldPrice: null,
+        rating: 4.7,
+        reviews: 18,
+        badge: "new",
+        imgPrimary: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?q=80&w=600&auto=format&fit=crop",
+        description: "Lightweight European flax linen blazer with structured lapels and minimalist single-button front closure."
+      },
+      {
+        id: 3,
+        title: "Minimalist Leather Tote",
+        category: "accessories",
+        price: 320,
+        oldPrice: 380,
+        rating: 4.8,
+        reviews: 42,
+        badge: "sale",
+        imgPrimary: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?q=80&w=600&auto=format&fit=crop",
+        description: "Handcrafted full-grain Italian calfskin leather tote bag featuring a spacious suede-lined interior and magnetic clasp."
+      },
+      {
+        id: 4,
+        title: "Silk Slip Midi Dress",
+        category: "clothing",
+        price: 280,
+        oldPrice: null,
+        rating: 4.9,
+        reviews: 31,
+        badge: "new",
+        imgPrimary: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=600&auto=format&fit=crop",
+        description: "Bias-cut 100% Mulberry silk dress designed to drape fluidly along body contours. Features adjustable delicate straps."
+      },
+      {
+        id: 5,
+        title: "Chunky Leather Boots",
+        category: "footwear",
+        price: 340,
+        oldPrice: null,
+        rating: 4.6,
+        reviews: 15,
+        badge: null,
+        imgPrimary: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=600&auto=format&fit=crop",
+        description: "Durable smooth leather ankle boots set on lightweight lug soles with side zip accessibility."
+      },
+      {
+        id: 6,
+        title: "Sculptural Gold Hoops",
+        category: "accessories",
+        price: 110,
+        oldPrice: 140,
+        rating: 4.8,
+        reviews: 56,
+        badge: "sale",
+        imgPrimary: "https://images.unsplash.com/photo-1630019852942-f89202989a59?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=600&auto=format&fit=crop",
+        description: "18k gold-plated recycled sterling silver hoop earrings with an organic, hand-sculpted liquid finish."
+      },
+      {
+        id: 7,
+        title: "Classic Belted Trench",
+        category: "clothing",
+        price: 420,
+        oldPrice: null,
+        rating: 5.0,
+        reviews: 19,
+        badge: "bestseller",
+        imgPrimary: "https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1516762689617-e1cffffd478d?q=80&w=600&auto=format&fit=crop",
+        description: "Double-breasted cotton-gabardine trench coat with storm flaps, horn buttons, and adjustable waist belt."
+      },
+      {
+        id: 8,
+        title: "Velvet Loafers",
+        category: "footwear",
+        price: 210,
+        oldPrice: null,
+        rating: 4.5,
+        reviews: 12,
+        badge: "new",
+        imgPrimary: "https://images.unsplash.com/photo-1582966772680-860e3525554a?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?q=80&w=600&auto=format&fit=crop",
+        description: "Plush velvet slip-on loafers detailed with subtle piping and soft cushioned leather insoles."
+      },
+      {
+        id: 9,
+        title: "Ribbed Merino Knit Sweater",
+        category: "clothing",
+        price: 190,
+        oldPrice: 230,
+        rating: 4.7,
+        reviews: 29,
+        badge: "sale",
+        imgPrimary: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=600&auto=format&fit=crop",
+        description: "Soft tactile extra-fine Merino wool crewneck sweater with fisherman ribbed knit texture."
+      },
+      {
+        id: 10,
+        title: "Structured Crossbody Bag",
+        category: "accessories",
+        price: 290,
+        oldPrice: null,
+        rating: 4.8,
+        reviews: 37,
+        badge: null,
+        imgPrimary: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=600&auto=format&fit=crop",
+        description: "Box-shaped structured shoulder bag featuring brushed hardware and an adjustable leather crossbody strap."
+      },
+      {
+        id: 11,
+        title: "Wide-Leg Pleated Trousers",
+        category: "clothing",
+        price: 220,
+        oldPrice: null,
+        rating: 4.6,
+        reviews: 14,
+        badge: null,
+        imgPrimary: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1551854838-212c50b4c184?q=80&w=600&auto=format&fit=crop",
+        description: "High-waisted tailored wool-blend trousers with front double pleats and a relaxing wide-leg silhouette."
+      },
+      {
+        id: 12,
+        title: "Oversized Acetate Sunglasses",
+        category: "accessories",
+        price: 150,
+        oldPrice: null,
+        rating: 4.9,
+        reviews: 22,
+        badge: "bestseller",
+        imgPrimary: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=600&auto=format&fit=crop",
+        imgSecondary: "https://images.unsplash.com/photo-1577803645773-f96470509666?q=80&w=600&auto=format&fit=crop",
+        description: "Bevelled handcrafted acetate sunglasses with 100% UV-protective tinted lenses."
+      }
+    ];
+
+    /* --------------------------------------------------------------------------
+       2. APPLICATION STATE MANAGEMENT
+       -------------------------------------------------------------------------- */
+    let cart = [];
+    let wishlist = [];
+    let currentCategory = 'all';
+
+    // DOM Elements Reference
+    const productGrid = document.getElementById('product-grid');
+    const cartIcon = document.getElementById('cart-icon');
+    const cartCount = document.getElementById('cart-count');
+    const wishlistCount = document.getElementById('wishlist-count');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const overlay = document.getElementById('overlay');
+    const closeCartBtn = document.getElementById('close-cart');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartSubtotalEl = document.getElementById('cart-subtotal');
+    const drawerItemCountEl = document.getElementById('drawer-item-count');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const quickViewModal = document.getElementById('quick-view-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    const modalContent = document.getElementById('modal-content');
+
+    /* --------------------------------------------------------------------------
+       3. RENDER PRODUCT GRID
+       -------------------------------------------------------------------------- */
+    function renderProducts(items) {
+      productGrid.innerHTML = '';
+      
+      if(items.length === 0) {
+        productGrid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color: var(--text-muted); padding: 40px;">No items match the selected category.</p>`;
+        return;
+      }
+
+      items.forEach(product => {
+        const isWishlisted = wishlist.includes(product.id);
+        
+        // Product Badge HTML
+        let badgeHtml = '';
+        if (product.badge === 'sale') badgeHtml = `<span class="card-badge badge-sale">Sale</span>`;
+        if (product.badge === 'new') badgeHtml = `<span class="card-badge badge-new">New</span>`;
+        if (product.badge === 'bestseller') badgeHtml = `<span class="card-badge badge-bestseller">Best Seller</span>`;
+
+        // Price display logic
+        const priceHtml = product.oldPrice 
+          ? `$${product.price} <span class="old-price">$${product.oldPrice}</span>`
+          : `$${product.price}`;
+
+        const card = document.createElement('article');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <div class="card-media">
+            ${badgeHtml}
+            <button class="wishlist-btn ${isWishlisted ? 'active' : ''}" onclick="toggleWishlist(${product.id}, event)" aria-label="Add to wishlist">
+              <i class="${isWishlisted ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+            </button>
+            <img class="card-img card-img-primary" src="${product.imgPrimary}" alt="${product.title}" loading="lazy">
+            <img class="card-img card-img-secondary" src="${product.imgSecondary}" alt="${product.title} angle" loading="lazy">
+            <button class="quick-view-btn" onclick="openQuickView(${product.id})">Quick View</button>
+          </div>
+          <div class="card-details">
+            <span class="card-category">${product.category}</span>
+            <h3 class="card-title">${product.title}</h3>
+            <div class="card-rating">
+              <i class="fa-solid fa-star"></i> ${product.rating} <span>(${product.reviews})</span>
+            </div>
+            <div class="card-price">${priceHtml}</div>
+          </div>
+        `;
+        productGrid.appendChild(card);
+      });
+    }
+
+    /* --------------------------------------------------------------------------
+       4. FILTER & SORT LOGIC
+       -------------------------------------------------------------------------- */
+    // Filter Chips Event Listeners
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', (e) => {
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        currentCategory = e.target.dataset.filter;
+        applyFiltersAndSort();
+      });
+    });
+
+    // Sorting Dropdown Listener
+    document.getElementById('sort-select').addEventListener('change', applyFiltersAndSort);
+
+    function applyFiltersAndSort() {
+      let filtered = currentCategory === 'all' 
+        ? [...products] 
+        : products.filter(p => p.category === currentCategory);
+
+      const sortValue = document.getElementById('sort-select').value;
+      if (sortValue === 'low-high') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortValue === 'high-low') {
+        filtered.sort((a, b) => b.price - a.price);
+      }
+
+      renderProducts(filtered);
+    }
+
+    /* --------------------------------------------------------------------------
+       5. WISHLIST TOGGLE LOGIC
+       -------------------------------------------------------------------------- */
+    function toggleWishlist(id, event) {
+      event.stopPropagation();
+      const index = wishlist.indexOf(id);
+      if (index === -1) {
+        wishlist.push(id);
+      } else {
+        wishlist.splice(index, 1);
+      }
+      wishlistCount.textContent = wishlist.length;
+      applyFiltersAndSort(); // Re-render cards to reflect active heart icons
+    }
+
+    /* --------------------------------------------------------------------------
+       6. SHOPPING CART & DRAWER MANAGEMENT
+       -------------------------------------------------------------------------- */
+    function addToCart(productId) {
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        const product = products.find(p => p.id === productId);
+        cart.push({ ...product, quantity: 1 });
+      }
+      updateCartUI();
+      openCartDrawer();
+    }
+
+    function updateCartQuantity(id, change) {
+      const item = cart.find(i => i.id === id);
+      if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+          cart = cart.filter(i => i.id !== id);
+        }
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      // Total count calculation
+      const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.textContent = totalCount;
+      drawerItemCountEl.textContent = totalCount;
+
+      // Render cart item list HTML
+      cartItemsContainer.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin-top: 40px;">Your shopping bag is empty.</p>`;
+      } else {
+        cart.forEach(item => {
+          const itemEl = document.createElement('div');
+          itemEl.className = 'cart-item';
+          itemEl.innerHTML = `
+            <img src="${item.imgPrimary}" alt="${item.title}" class="cart-item-img">
+            <div class="cart-item-info">
+              <h4 class="cart-item-title">${item.title}</h4>
+              <div class="cart-item-price">$${item.price}</div>
+              <div class="qty-controls">
+                <button class="qty-btn" onclick="updateCartQuantity(${item.id}, -1)">-</button>
+                <span>${item.quantity}</span>
+                <button class="qty-btn" onclick="updateCartQuantity(${item.id}, 1)">+</button>
+              </div>
+            </div>
+          `;
+          cartItemsContainer.appendChild(itemEl);
+        });
+      }
+
+      // Calculate Subtotal
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      cartSubtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+    }
+
+    function openCartDrawer() {
+      cartDrawer.classList.add('active');
+      overlay.classList.add('active');
+    }
+
+    function closeCartDrawer() {
+      cartDrawer.classList.remove('active');
+      overlay.classList.remove('active');
+    }
+
+    cartIcon.addEventListener('click', openCartDrawer);
+    closeCartBtn.addEventListener('click', closeCartDrawer);
+    overlay.addEventListener('click', () => {
+      closeCartDrawer();
+      closeModal();
+    });
+
+    /* --------------------------------------------------------------------------
+       7. QUICK VIEW MODAL LOGIC
+       -------------------------------------------------------------------------- */
+    function openQuickView(id) {
+      const product = products.find(p => p.id === id);
+      modalContent.innerHTML = `
+        <img src="${product.imgPrimary}" alt="${product.title}" class="modal-img">
+        <div class="modal-details">
+          <span class="card-category">${product.category}</span>
+          <h2 class="card-title" style="font-size: 1.5rem;">${product.title}</h2>
+          <div class="card-price" style="font-size: 1.2rem; margin: 10px 0;">$${product.price}</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">${product.description}</p>
+          
+          <div class="size-selector">
+            <div class="size-title">Select Size:</div>
+            <div class="size-options">
+              <button class="size-btn">S</button>
+              <button class="size-btn active">M</button>
+              <button class="size-btn">L</button>
+              <button class="size-btn">XL</button>
+            </div>
+          </div>
+
+          <button class="btn-primary" onclick="addToCart(${product.id}); closeModal();">Add to Bag</button>
+        </div>
+      `;
+      
+      // Add size selection toggle inside modal
+      modalContent.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          modalContent.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+        });
+      });
+
+      quickViewModal.classList.add('active');
+      overlay.classList.add('active');
+    }
+
+    function closeModal() {
+      quickViewModal.classList.remove('active');
+      overlay.classList.remove('active');
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+
+    /* --------------------------------------------------------------------------
+       8. DARK / LIGHT THEME TOGGLE
+       -------------------------------------------------------------------------- */
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      
+      // Update Sun/Moon Icon
+      const icon = themeToggleBtn.querySelector('i');
+      if(newTheme === 'dark') {
+        icon.className = 'fa-regular fa-sun';
+      } else {
+        icon.className = 'fa-regular fa-moon';
+      }
+    });
+
+    /* Initial execution on page load */
+    renderProducts(products);
+  </script>
+</body>
+</html>
